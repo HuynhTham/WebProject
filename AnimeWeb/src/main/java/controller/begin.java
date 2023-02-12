@@ -45,6 +45,7 @@ public class begin extends HttpServlet {
 				request.getRequestDispatcher("/anime-main/index.jsp").forward(request, response);
 			} catch (ClassNotFoundException | SQLException e) {
 				response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");
+				
 			}
 
 	}

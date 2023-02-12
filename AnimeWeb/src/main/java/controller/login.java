@@ -36,6 +36,7 @@ public class login extends HttpServlet {
 		String url = null;
 		if ("login".equals(query)) {
 			boolean error = false;
+			System.out.println(pass);
 			account = listAccount.checkLogin(userName, pass);
 			if (account != null) {
 				session.setAttribute("user", account);

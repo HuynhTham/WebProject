@@ -7,11 +7,11 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class DataSource {
-	private static final String DB_URL = "jdbc:sqlserver://MSI:1433;databaseName=projectWeb";
-	private static final String USER = "sa";
-	private static final String PASS = "123456";
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/projectweb";
+	private static final String USER = "root";
+	private static final String PASS = "Linh@27092002";
 	private static HikariConfig config = new HikariConfig();
-	private static final String CLASS_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+	private static final String CLASS_NAME = "com.mysql.cj.jdbc.Driver";
 	private static HikariDataSource ds;
 
 	static {

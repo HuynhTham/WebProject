@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import controller.login;
 import model.Account;
 
 
@@ -19,6 +20,7 @@ public class Login {
 		Connection conn = null;
 		ArrayList<Account> res = new ArrayList<>();
 		conn = DataSource.getConnection();
+		
 		PreparedStatement ps = conn.prepareStatement("select * from account");
 		ResultSet rs = ps.executeQuery();
 		Account ac;
@@ -35,10 +37,14 @@ public class Login {
 	public void changeProfile(String userName, String passWord, String email, String img) throws ClassNotFoundException, SQLException {
 		Connection conn = null;
 		conn = DataSource.getConnection();
-
-		PreparedStatement ps = conn.prepareStatement("update account set PassW='"+passWord+"',Email='"+email+"',avatar='"+img+"' "+"where UserName='" + userName + "'");
+			
+		PreparedStatement ps = conn.prepareStatement("update account set PassW=?,Email=?,avatar=? where UserName =?");
+		ps.setString(1, passWord);
+		ps.setString(2,email);
+		ps.setString(3, img);
+		ps.setString(4, userName);
 		ps.executeUpdate();
-
+		
 		
 		
 	}
@@ -65,6 +71,16 @@ public class Login {
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		
+	System.out.println(new Login().getConnection());
+	System.out.println(new movie().getMovie());
+	System.out.println(new blog().getlistBlog());
+	Connection conn = null;
+	conn = DataSource.getConnection();
+	PreparedStatement ps = conn.prepareStatement("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND   TABLE_NAME   = ?");
+	ps.setString(1, "projectweb");
+	ps.setString(2, "movie");
+	ResultSet n = ps.executeQuery();
+	n.next();
+	System.out.println(n.getInt(1));
 	}
 }

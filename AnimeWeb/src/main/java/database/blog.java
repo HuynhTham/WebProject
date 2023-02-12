@@ -92,8 +92,9 @@ public class blog {
 	public void commentBlog(int idBlog, String userName, String mess) throws ClassNotFoundException, SQLException {
 		Connection conn = null;
 		conn = DataSource.getConnection();
-		PreparedStatement ps = conn.prepareStatement("insert into blogComment values(?,?,?,?)");
+		PreparedStatement ps = conn.prepareStatement("INSERT INTO `projectweb`.`blogcomment` (`idBlog`, `mess`, `UserName`, `dateCmt`) values(?,?,?,?)");
 		ps.setInt(1, idBlog);
+	
 		ps.setString(2, mess);
 		ps.setString(3, userName);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -108,7 +109,8 @@ public class blog {
 			throws ClassNotFoundException, SQLException {
 		Connection conn = null;
 		conn = DataSource.getConnection();
-		PreparedStatement ps = conn.prepareStatement("insert into replyComment values(?,?,?,?,?,?)");
+		PreparedStatement ps = conn.prepareStatement("INSERT INTO `projectweb`.`replycomment` (`idBlog`, `idCmt`, `UserNameCmt`, `UserNameReply`, `mess`, `daycmt`) values(?,?,?,?,?,?)");
+
 		ps.setInt(1, idBlog);
 		ps.setInt(2, idCmt);
 		ps.setString(3, userNameCmt);
@@ -118,6 +120,7 @@ public class blog {
 		Date date = new Date();
 		String fm = format.format(date);
 		ps.setString(6, fm);
+
 		ps.executeUpdate();
 
 
@@ -134,14 +137,30 @@ public class blog {
 		Connection conn = null;
 		boolean m = checkAvtFormat(avt.getSubmittedFileName());
 		conn = DataSource.getConnection();
+		int newId=1;
+		PreparedStatement ps = conn.prepareStatement("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND   TABLE_NAME   = ?");
+		ps.setString(1, "projectweb");
+		ps.setString(2, "blog");
+		ResultSet n = ps.executeQuery();
+		String avtname = "avt." + avt.getSubmittedFileName().substring(avt.getSubmittedFileName().length() - 3);
+		n.next();
+			newId=n.getInt(1);
+		
+	
+		String query = "INSERT INTO `projectweb`.`blog` (`title`, `folder`, `datePost`, `avt`, `dayDebut`) values(?,?,?,?,?)";
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date date = new Date();
+		String fm = format.format(date);
+		PreparedStatement pps = conn.prepareStatement(query);
+	
+		pps.setString(1, title);
+		pps.setString(2, newId + "_blog");
+		pps.setString(3, fm);
+		pps.setString(4, avtname);
+		pps.setString(5, dayDebut);
+		pps.executeUpdate();
 
-		PreparedStatement ps = conn.prepareStatement("select max(idBlog) from blog");
-		ResultSet rsId = ps.executeQuery();
-		int newId = 0;
-		while (rsId.next()) {
-			newId = rsId.getInt(1);
-		}
-		newId++;
+		
 		if (doc.getSize() != 0 && m) {
 			File folder = new File(path + "\\" + newId + "_blog");
 
@@ -152,22 +171,11 @@ public class blog {
 				folder.delete();
 			}
 			folder.mkdirs();
-			String avtname = "avt." + avt.getSubmittedFileName().substring(avt.getSubmittedFileName().length() - 3);
+			
 			saveWordtoServer(folder.getAbsolutePath(), doc);
 			saveAvttoServer(folder.getAbsolutePath(), avt);
 			
-			String query = "insert into blog values(?,?,?,?,?)";
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			Date date = new Date();
-			String fm = format.format(date);
-			PreparedStatement pps = conn.prepareStatement(query);
-			pps.setString(1, title);
-			pps.setString(2, newId + "_blog");
-			pps.setString(3, fm);
-			pps.setString(4, avtname);
-			pps.setString(5, dayDebut);
-			pps.executeUpdate();
-
+		
 
 			return true;
 		}

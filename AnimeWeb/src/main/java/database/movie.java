@@ -94,8 +94,7 @@ public class movie {
 		while (rs.next()) {
 			genre = rs.getString(1);
 			result.add(genre);
-		}
-		;
+		};
 		return result;
 	}
 
@@ -450,25 +449,28 @@ public class movie {
 
 	public boolean addMovie(String nameMv, String genre, String des, String totalEpi, Part avt, String savePath) throws ClassNotFoundException, SQLException, IOException {
 		int ttep;
-		if (totalEpi.equalsIgnoreCase(""))
-			totalEpi = "1";
+		if (totalEpi.equalsIgnoreCase(""))totalEpi = "1";
 		ttep = Integer.parseInt(totalEpi);
 		Connection conn=null;
 		conn = DataSource.getConnection();
-		PreparedStatement ps = conn.prepareStatement("select max(idMovie) from movie");
-		ResultSet rsId = ps.executeQuery();
-		int newId = 0;
-		while (rsId.next()) {
-			newId = rsId.getInt(1);
-		}
-		newId++;
-		ps.close();
+		PreparedStatement ps = conn.prepareStatement("SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND   TABLE_NAME   = ?");
+		ps.setString(1, "projectweb");
+		ps.setString(2, "movie");
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		int newId = rs.getInt(1);
+	
+	
 		String avtname = newId + "avt."
 				+ avt.getSubmittedFileName().substring(avt.getSubmittedFileName().length() - 3);
 		Movie currentMv = new Movie(newId, nameMv, genre, 0, ttep, 0, avtname, null, null, des);
+	
 		saveAvttoServer(savePath, avt, currentMv);
-		String query ="insert into movie values(?,?,?,?,?,?,?)";
+		String query ="INSERT INTO `projectweb`.`movie` (`nameMovie`, `genre`, `currentEpisode`, `totalEpisodes`, `viewer`, `avatar`, `descriptionit`) values(?,?,?,?,?,?,?)";
+
 		PreparedStatement p = conn.prepareStatement(query);
+		
 			p.setString(1, nameMv);
 			p.setString(2, genre);
 			p.setInt(3, currentMv.getCurrentEpisode());

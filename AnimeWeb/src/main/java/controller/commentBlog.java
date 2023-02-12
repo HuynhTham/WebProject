@@ -43,7 +43,8 @@ public class commentBlog extends HttpServlet {
 							getServletContext().setAttribute("listBlog", new ListBlog(DBAOBlog.getlistBlog()));
 							request.getRequestDispatcher(url).forward(request, response);
 						} catch (ClassNotFoundException | SQLException e) {
-							response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");
+							//response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");
+							e.printStackTrace();
 						}
 					}else {
 						response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");

@@ -52,7 +52,7 @@ public class Admin extends HttpServlet {
 
 				String savePath = appPath + "anime-main\\storage\\blogSave";
 
-				if (file.getSubmittedFileName().endsWith(".docx")) {
+				if (file.getSubmittedFileName().endsWith(".docx")||file.getSubmittedFileName().endsWith(".doc")||file.getSubmittedFileName().endsWith(".odt")) {
 
 					try {
 						blog blogDao = new blog();
@@ -61,8 +61,8 @@ public class Admin extends HttpServlet {
 						response.sendRedirect(
 								getServletContext().getContextPath() + "/admin/blogManagerment.jsp" + sessionId);
 					} catch (Exception e) {
-
-						response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");
+						e.printStackTrace();
+						//response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");
 					}
 				}
 
@@ -226,10 +226,13 @@ public class Admin extends HttpServlet {
 						request.getRequestDispatcher("/admin/movieManagerment.jsp").forward(request, response);
 					} else {
 						response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");
+						
 					}
 				} catch (ClassNotFoundException | SQLException e) {
 			
-					response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");}
+					response.getWriter().println("<img class=\"rsImg\" src=\"/AnimeWeb/error.png"+"\">");
+					
+					}
 				break;
 			}
 			case "settingAccount": {
