@@ -52,8 +52,8 @@
 	<c:url var="anime-details" value="/anime-main/anime-deails.jsp" />
 	<c:url var="loginServlet" value="login" />
 	<!-- Header Section Begin -->
-	<fmt:setLocale value="vi_VN" />
-	<fmt:setBundle basename="anime.web.resources.app" />
+	
+	
 	<c:import url="/anime-main/header.jsp" />
 	<!-- Header End -->
 
