@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="zxx">
-
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Anime Template">
@@ -222,7 +221,5 @@
 	<script src="js/owl.carousel.min.js"></script>
 	<script src="js/main.js"></script>
 
-
 </body>
-
 </html>
